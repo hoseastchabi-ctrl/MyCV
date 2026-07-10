@@ -2,29 +2,28 @@
 
 namespace App\Http\Requests\Experience;
 
-use App\Models\Experience;
+use App\Enums\EmploymentType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class UpdateExperienceRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        $experience = $this->route('experience');
-
-        return $experience instanceof Experience && $experience->resume->user_id === $this->user()->id;
+        return $this->user()->can('update', $this->route('experience'));
     }
 
     public function rules(): array
     {
         return [
-            'job_title' => ['sometimes', 'string', 'max:255'],
-            'company_name' => ['sometimes', 'string', 'max:255'],
+            'title' => ['sometimes', 'required', 'string', 'max:255'],
+            'company_name' => ['sometimes', 'required', 'string', 'max:255'],
             'location' => ['nullable', 'string', 'max:255'],
-            'start_date' => ['sometimes', 'date'],
+            'employment_type' => ['sometimes', 'required', new Enum(EmploymentType::class)],
+            'start_date' => ['sometimes', 'required', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
-            'is_current' => ['sometimes', 'boolean'],
-            'description' => ['nullable', 'string'],
-            'sort_order' => ['sometimes', 'integer', 'min:0'],
+            'description' => ['nullable', 'string', 'max:2000'],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
         ];
     }
 }

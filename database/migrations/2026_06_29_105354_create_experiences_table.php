@@ -8,15 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('experiences', function (Blueprint $table) {
+        Schema::create('experiences', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('resume_id')->constrained()->cascadeOnDelete();
-            $table->string('job_title');
+            $table->string('title');
             $table->string('company_name');
             $table->string('location')->nullable();
+            $table->string('employment_type');
             $table->date('start_date');
             $table->date('end_date')->nullable();
-            $table->boolean('is_current')->default(false);
             $table->text('description')->nullable();
             $table->unsignedSmallInteger('sort_order')->default(0);
             $table->timestamps();

@@ -20,7 +20,7 @@ class Resume extends Model
     protected $casts = [
         'data' => 'array',
     ];
-
+    
     public function experiences(): HasMany
     {
         return $this->hasMany(Experience::class)->orderBy('sort_order');

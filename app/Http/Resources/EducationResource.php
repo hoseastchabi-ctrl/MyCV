@@ -13,14 +13,12 @@ class EducationResource extends JsonResource
             'id' => $this->id,
             'institution_name' => $this->institution_name,
             'degree' => $this->degree,
+            'degree_type' => $this->degree_type->value,
             'field_of_study' => $this->field_of_study,
-            'start_date' => $this->start_date?->toDateString(),
+            'start_date' => $this->start_date->toDateString(),
             'end_date' => $this->end_date?->toDateString(),
-            'is_current' => $this->is_current,
             'description' => $this->description,
             'sort_order' => $this->sort_order,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }

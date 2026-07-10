@@ -9,12 +9,13 @@ use App\Http\Resources\ExperienceResource;
 use App\Models\Experience;
 use App\Models\Resume;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 
 class ExperienceController extends Controller
 {
     public function index(Resume $resume): JsonResponse
     {
-        $this->authorizeResume($resume);
+        Gate::authorize('viewAny', [Experience::class, $resume]);
 
         return ExperienceResource::collection($resume->experiences)->response();
     }
@@ -23,41 +24,24 @@ class ExperienceController extends Controller
     {
         $experience = $resume->experiences()->create($request->validated());
 
-        return (new ExperienceResource($experience))
+        return ExperienceResource::make($experience)
             ->response()
             ->setStatusCode(201);
     }
 
-    public function show(Experience $experience): JsonResponse
-    {
-        $this->authorizeExperience($experience);
-
-        return (new ExperienceResource($experience))->response();
-    }
-
-    public function update(UpdateExperienceRequest $request, Experience $experience): JsonResponse
+    public function update(UpdateExperienceRequest $request, Resume $resume, Experience $experience): JsonResponse
     {
         $experience->update($request->validated());
 
-        return (new ExperienceResource($experience))->response();
+        return ExperienceResource::make($experience)->response();
     }
 
-    public function destroy(Experience $experience): JsonResponse
+    public function destroy(Resume $resume, Experience $experience): JsonResponse
     {
-        $this->authorizeExperience($experience);
+        Gate::authorize('delete', $experience);
 
         $experience->delete();
 
-        return response()->json(null, 204);
-    }
-
-    private function authorizeResume(Resume $resume): void
-    {
-        abort_unless($resume->user_id === auth()->id(), 403);
-    }
-
-    private function authorizeExperience(Experience $experience): void
-    {
-        abort_unless($experience->resume->user_id === auth()->id(), 403);
+        return response()->json(status: 204);
     }
 }

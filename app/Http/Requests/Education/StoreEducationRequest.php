@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Experience;
+namespace App\Http\Requests\Education;
 
-use App\Enums\EmploymentType;
+use App\Enums\DegreeType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class StoreExperienceRequest extends FormRequest
+class StoreEducationRequest extends FormRequest
 {
     public function authorize(): bool
     {
         return $this->user()->can('create', [
-            \App\Models\Experience::class,
+            \App\Models\Education::class,
             $this->route('resume'),
         ]);
     }
@@ -19,10 +19,10 @@ class StoreExperienceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'company_name' => ['required', 'string', 'max:255'],
-            'location' => ['nullable', 'string', 'max:255'],
-            'employment_type' => ['required', new Enum(EmploymentType::class)],
+            'institution_name' => ['required', 'string', 'max:255'],
+            'degree' => ['required', 'string', 'max:255'],
+            'degree_type' => ['required', new Enum(DegreeType::class)],
+            'field_of_study' => ['nullable', 'string', 'max:255'],
             'start_date' => ['required', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'description' => ['nullable', 'string', 'max:2000'],

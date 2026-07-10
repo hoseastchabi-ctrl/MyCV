@@ -2,21 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\DegreeType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Education extends Model
 {
-    use HasFactory;
+    protected $table = 'educations';
 
     protected $fillable = [
+        'resume_id',
         'institution_name',
         'degree',
+        'degree_type',
         'field_of_study',
         'start_date',
         'end_date',
-        'is_current',
         'description',
         'sort_order',
     ];
@@ -24,9 +25,9 @@ class Education extends Model
     protected function casts(): array
     {
         return [
+            'degree_type' => DegreeType::class,
             'start_date' => 'date',
             'end_date' => 'date',
-            'is_current' => 'boolean',
         ];
     }
 

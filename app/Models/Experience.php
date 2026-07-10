@@ -2,21 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\EmploymentType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Experience extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'job_title',
+        'resume_id',
+        'title',
         'company_name',
         'location',
+        'employment_type',
         'start_date',
         'end_date',
-        'is_current',
         'description',
         'sort_order',
     ];
@@ -24,9 +23,9 @@ class Experience extends Model
     protected function casts(): array
     {
         return [
+            'employment_type' => EmploymentType::class,
             'start_date' => 'date',
             'end_date' => 'date',
-            'is_current' => 'boolean',
         ];
     }
 
