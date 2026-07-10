@@ -2,26 +2,21 @@
 
 namespace App\Http\Requests\Skill;
 
-use App\Enums\SkillLevel;
-use App\Models\Skill;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
 
 class UpdateSkillRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        $skill = $this->route('skill');
-
-        return $skill instanceof Skill && $skill->resume->user_id === $this->user()->id;
+        return $this->user()->can('update', $this->route('skill'));
     }
 
     public function rules(): array
     {
         return [
-            'name' => ['sometimes', 'string', 'max:255'],
-            'level' => ['nullable', new Enum(SkillLevel::class)],
-            'sort_order' => ['sometimes', 'integer', 'min:0'],
+            'name' => ['sometimes', 'required', 'string', 'max:255'],
+            'proficiency_level' => ['sometimes', 'required', 'integer', 'min:1', 'max:5'],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
         ];
     }
 }

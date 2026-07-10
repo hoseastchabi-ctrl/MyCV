@@ -5,19 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Skill extends Model
+class Certification extends Model
 {
     protected $fillable = [
         'resume_id',
         'name',
-        'proficiency_level',
+        'issuing_organization',
+        'credential_id',
+        'credential_url',
+        'issue_date',
+        'expiration_date',
         'sort_order',
     ];
 
     protected function casts(): array
     {
         return [
-            'proficiency_level' => 'integer',
+            'issue_date' => 'date',
+            'expiration_date' => 'date',
             'sort_order' => 'integer',
         ];
     }

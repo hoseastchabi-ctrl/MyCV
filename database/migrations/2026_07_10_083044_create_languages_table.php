@@ -8,11 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('skills', function (Blueprint $table): void {
+        Schema::create('languages', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('resume_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->unsignedTinyInteger('proficiency_level')->default(1);
+            $table->string('proficiency_level');
             $table->unsignedSmallInteger('sort_order')->default(0);
             $table->timestamps();
 
@@ -22,6 +22,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('skills');
+        Schema::dropIfExists('languages');
     }
 };
