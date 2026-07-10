@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\LanguageController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\SkillController;
 use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\Api\ResumeGenerationController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
@@ -22,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
 
     Route::prefix('resumes/{resume}')->group(function (): void {
         Route::get('experiences', [ExperienceController::class, 'index']);
+        Route::post('resumes/{resume}/generate', ResumeGenerationController::class);
         Route::post('experiences', [ExperienceController::class, 'store']);
         Route::patch('experiences/{experience}', [ExperienceController::class, 'update']);
         Route::put('experiences/{experience}', [ExperienceController::class, 'update']);
